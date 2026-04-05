@@ -9,18 +9,12 @@ struct MenuBarContentView: View {
                 get: { viewModel.launchAtLoginEnabled },
                 set: { viewModel.setLaunchAtLogin($0) }
             )) {
-                Text("开机启动")
-            }
-
-            if let launchAtLoginErrorText = viewModel.launchAtLoginErrorText {
-                Text(launchAtLoginErrorText)
-                    .foregroundStyle(.red)
-                    .font(.caption)
+                Text(String(localized: "menu.launch_at_login", table: "Localizable"))
             }
 
             Divider()
 
-            Button("退出") {
+            Button(String(localized: "menu.quit", table: "Localizable")) {
                 NSApplication.shared.terminate(nil)
             }
         }

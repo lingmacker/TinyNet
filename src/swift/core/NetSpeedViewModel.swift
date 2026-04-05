@@ -8,9 +8,7 @@ import TinyNetFFI
 final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var uploadSpeed: Float = 0
     @Published private(set) var downloadSpeed: Float = 0
-    @Published private(set) var errorText: String?
     @Published private(set) var launchAtLoginEnabled: Bool = false
-    @Published private(set) var launchAtLoginErrorText: String?
 
     private let refreshInterval: TimeInterval
     private let calculator: OpaquePointer
@@ -38,7 +36,6 @@ final class NetSpeedViewModel: ObservableObject {
         guard let totals = readSystemTotals() else {
             uploadSpeed = 0
             downloadSpeed = 0
-            errorText = "无法读取网络接口数据"
             return
         }
 
@@ -56,13 +53,11 @@ final class NetSpeedViewModel: ObservableObject {
         guard result == TINYNET_FFI_OK else {
             uploadSpeed = 0
             downloadSpeed = 0
-            errorText = "Rust 计算失败（错误码: \(result.rawValue)）"
             return
         }
 
         uploadSpeed = Float(speed.upload_bps) / 1024.0
         downloadSpeed = Float(speed.download_bps) / 1024.0
-        errorText = nil
     }
 
     private func startAutoRefresh() {
@@ -117,10 +112,8 @@ final class NetSpeedViewModel: ObservableObject {
             }
 
             syncLaunchAtLoginStatus()
-            launchAtLoginErrorText = nil
         } catch {
             syncLaunchAtLoginStatus()
-            launchAtLoginErrorText = "开机启动设置失败"
         }
     }
 
