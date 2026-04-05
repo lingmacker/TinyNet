@@ -155,7 +155,6 @@
 			);
 			outputPaths = (
 				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.a",
-				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.dylib",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

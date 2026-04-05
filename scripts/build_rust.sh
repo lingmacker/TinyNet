@@ -39,6 +39,7 @@ case "$SELECTED_ARCH" in
 esac
 
 mkdir -p "$OUTPUT_DIR"
+rm -f "$OUTPUT_DIR/libnet_speed_core.dylib"
 
 if [[ "${CONFIGURATION:-Debug}" == "Release" ]]; then
   cargo build --manifest-path "$CRATE_MANIFEST" --release --target "$TARGET_TRIPLE"
@@ -49,6 +50,5 @@ else
 fi
 
 cp "$ROOT/target/$TARGET_TRIPLE/$PROFILE_DIR/libnet_speed_core.a" "$OUTPUT_DIR/libnet_speed_core.a"
-cp "$ROOT/target/$TARGET_TRIPLE/$PROFILE_DIR/libnet_speed_core.dylib" "$OUTPUT_DIR/libnet_speed_core.dylib"
 
 printf "Rust artifacts copied to %s (target: %s, profile: %s)\n" "$OUTPUT_DIR" "$TARGET_TRIPLE" "$PROFILE_DIR"
