@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct TinyNetMenuApp: App {
+struct TinyNet: App {
     @StateObject private var viewModel = NetSpeedViewModel()
 
     var body: some Scene {

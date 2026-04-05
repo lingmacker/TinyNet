@@ -10,8 +10,6 @@ TinyNet 是一个 macOS 菜单栏网速工具，使用 **Rust + SwiftUI** 实现
 >
 > Claude code 实验产物
 
-Claude code实验产物
-
 ## 项目结构
 
 ```text
@@ -22,7 +20,7 @@ TinyNet/
 ├── tests/rust/               # Rust 测试
 ├── bridge/                   # Swift <-> Rust 桥接产物与头文件
 ├── scripts/build_rust.sh     # Rust 构建脚本（Xcode/CLI 共用）
-├── TinyNetMenuApp.xcodeproj  # Xcode 工程
+├── TinyNet.xcodeproj  # Xcode 工程
 └── Makefile                  # 一键构建/运行
 ```
 
@@ -68,19 +66,19 @@ make build-app CONFIGURATION=Release
 通过 Makefile 构建后，App 位于：
 
 ```text
-.build/DerivedData/Build/Products/<CONFIGURATION>/TinyNetMenuApp.app
+.build/DerivedData/Build/Products/<CONFIGURATION>/TinyNet.app
 ```
 
 例如 Debug：
 
 ```text
-.build/DerivedData/Build/Products/Debug/TinyNetMenuApp.app
+.build/DerivedData/Build/Products/Debug/TinyNet.app
 ```
 
 ## 使用 Xcode 运行
 
-1. 打开 `TinyNetMenuApp.xcodeproj`
-2. 选择 `TinyNetMenuApp` scheme
+1. 打开 `TinyNet.xcodeproj`
+2. 选择 `TinyNet` scheme
 3. 直接 Run
 
 工程已包含 Rust 构建脚本阶段（Build Rust Core），运行时会自动先编译 Rust。

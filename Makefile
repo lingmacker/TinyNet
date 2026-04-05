@@ -1,10 +1,10 @@
 SHELL := /bin/bash
 ROOT := $(CURDIR)
-PROJECT := $(ROOT)/TinyNetMenuApp.xcodeproj
-SCHEME := TinyNetMenuApp
+PROJECT := $(ROOT)/TinyNet.xcodeproj
+SCHEME := TinyNet
 CONFIGURATION ?= Debug
 DERIVED_DATA := $(ROOT)/.build/DerivedData
-APP_PATH := $(DERIVED_DATA)/Build/Products/$(CONFIGURATION)/TinyNetMenuApp.app
+APP_PATH := $(DERIVED_DATA)/Build/Products/$(CONFIGURATION)/TinyNet.app
 
 .PHONY: build-rust build-app run clean
 

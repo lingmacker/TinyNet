@@ -2,3 +2,4 @@
 .claude
 target
 bridge/lib
+.DS_Store

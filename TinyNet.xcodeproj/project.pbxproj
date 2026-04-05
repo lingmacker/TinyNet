@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000000000000000000001 /* TinyNetMenuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* TinyNetMenuApp.swift */; };
+		A10000000000000000000001 /* TinyNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* TinyNet.swift */; };
 		A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* MenuBarSpeedLabel.swift */; };
 		A10000000000000000000003 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* MenuBarContentView.swift */; };
 		A10000000000000000000004 /* NetSpeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* NetSpeedViewModel.swift */; };
@@ -17,12 +17,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A20000000000000000000001 /* TinyNetMenuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TinyNetMenuApp.swift; path = src/swift/TinyNetMenuApp.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TinyNet.swift; path = src/swift/TinyNet.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarSpeedLabel.swift; path = src/swift/ui/MenuBarSpeedLabel.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarContentView.swift; path = src/swift/ui/MenuBarContentView.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000004 /* NetSpeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedViewModel.swift; path = src/swift/core/NetSpeedViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000005 /* libnet_speed_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnet_speed_core.a; path = bridge/lib/libnet_speed_core.a; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000006 /* TinyNetMenuApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyNetMenuApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000006 /* TinyNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000000000000000000007 /* JetBrainsMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "JetBrainsMono-Bold.ttf"; path = "Fonts/JetBrainsMono-Bold.ttf"; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000008 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = src/swift/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -42,15 +42,15 @@
 		A40000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				A40000000000000000000002 /* TinyNetMenuApp */,
+				A40000000000000000000002 /* TinyNet */,
 				A40000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A40000000000000000000002 /* TinyNetMenuApp */ = {
+		A40000000000000000000002 /* TinyNet */ = {
 			isa = PBXGroup;
 			children = (
-				A20000000000000000000001 /* TinyNetMenuApp.swift */,
+				A20000000000000000000001 /* TinyNet.swift */,
 				A20000000000000000000002 /* MenuBarSpeedLabel.swift */,
 				A20000000000000000000003 /* MenuBarContentView.swift */,
 				A20000000000000000000004 /* NetSpeedViewModel.swift */,
@@ -58,13 +58,13 @@
 				A20000000000000000000007 /* JetBrainsMono-Bold.ttf */,
 				A20000000000000000000005 /* libnet_speed_core.a */,
 			);
-			name = TinyNetMenuApp;
+			name = TinyNet;
 			sourceTree = "<group>";
 		};
 		A40000000000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A20000000000000000000006 /* TinyNetMenuApp.app */,
+				A20000000000000000000006 /* TinyNet.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,9 +72,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A50000000000000000000001 /* TinyNetMenuApp */ = {
+		A50000000000000000000001 /* TinyNet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXNativeTarget "TinyNetMenuApp" */;
+			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXNativeTarget "TinyNet" */;
 			buildPhases = (
 				A30000000000000000000003 /* Build Rust Core */,
 				A30000000000000000000002 /* Sources */,
@@ -85,9 +85,9 @@
 			);
 			dependencies = (
 			);
-			name = TinyNetMenuApp;
-			productName = TinyNetMenuApp;
-			productReference = A20000000000000000000006 /* TinyNetMenuApp.app */;
+			name = TinyNet;
+			productName = TinyNet;
+			productReference = A20000000000000000000006 /* TinyNet.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -105,7 +105,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A70000000000000000000002 /* Build configuration list for PBXProject "TinyNetMenuApp" */;
+			buildConfigurationList = A70000000000000000000002 /* Build configuration list for PBXProject "TinyNet" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -119,7 +119,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A50000000000000000000001 /* TinyNetMenuApp */,
+				A50000000000000000000001 /* TinyNet */,
 			);
 		};
 /* End PBXProject section */
@@ -164,7 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000001 /* TinyNetMenuApp.swift in Sources */,
+				A10000000000000000000001 /* TinyNet.swift in Sources */,
 				A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */,
 				A10000000000000000000003 /* MenuBarContentView.swift in Sources */,
 				A10000000000000000000004 /* NetSpeedViewModel.swift in Sources */,
@@ -196,7 +196,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1.0;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet.menuapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
@@ -227,7 +227,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1.0;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet.menuapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
@@ -342,7 +342,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A70000000000000000000001 /* Build configuration list for PBXNativeTarget "TinyNetMenuApp" */ = {
+		A70000000000000000000001 /* Build configuration list for PBXNativeTarget "TinyNet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A80000000000000000000001 /* Debug */,
@@ -351,7 +351,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A70000000000000000000002 /* Build configuration list for PBXProject "TinyNetMenuApp" */ = {
+		A70000000000000000000002 /* Build configuration list for PBXProject "TinyNet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A80000000000000000000003 /* Debug */,
