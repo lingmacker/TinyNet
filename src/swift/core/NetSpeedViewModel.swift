@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import Darwin
+import ServiceManagement
 import TinyNetFFI
 
 @MainActor
@@ -8,6 +9,8 @@ final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var uploadSpeed: Float = 0
     @Published private(set) var downloadSpeed: Float = 0
     @Published private(set) var errorText: String?
+    @Published private(set) var launchAtLoginEnabled: Bool = false
+    @Published private(set) var launchAtLoginErrorText: String?
 
     private let refreshInterval: TimeInterval
     private let calculator: OpaquePointer
@@ -21,6 +24,7 @@ final class NetSpeedViewModel: ObservableObject {
         }
 
         self.calculator = calculator
+        syncLaunchAtLoginStatus()
         startAutoRefresh()
         refresh()
     }
@@ -102,6 +106,26 @@ final class NetSpeedViewModel: ObservableObject {
         }
 
         return (rxTotal, txTotal)
+    }
+
+    func setLaunchAtLogin(_ enabled: Bool) {
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+
+            syncLaunchAtLoginStatus()
+            launchAtLoginErrorText = nil
+        } catch {
+            syncLaunchAtLoginStatus()
+            launchAtLoginErrorText = "开机启动设置失败"
+        }
+    }
+
+    func syncLaunchAtLoginStatus() {
+        launchAtLoginEnabled = SMAppService.mainApp.status == .enabled
     }
 
     private static func isSupportedInterface(_ name: String) -> Bool {
