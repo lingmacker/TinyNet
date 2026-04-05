@@ -39,7 +39,7 @@ final class MenuBarIconGenerator {
 
             let textSize = text.size(withAttributes: attributes)
             let textRect = NSRect(
-                x: rect.width - textSize.width - 2,
+                x: (rect.width - textSize.width) / 2,
                 y: (rect.height - textSize.height) / 2,
                 width: textSize.width,
                 height: textSize.height

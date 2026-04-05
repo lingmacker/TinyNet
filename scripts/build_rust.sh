@@ -6,21 +6,37 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CRATE_MANIFEST="$ROOT/src/rust/Cargo.toml"
 OUTPUT_DIR="$ROOT/bridge/lib"
 
-if [[ -n "${ARCHS:-}" ]]; then
+# Xcode GUI may not inherit shell PATH (cargo not found).
+export PATH="$HOME/.cargo/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if ! command -v cargo >/dev/null 2>&1; then
+  printf "error: cargo not found. Install Rust or add cargo to PATH.\n" >&2
+  exit 1
+fi
+
+if [[ -n "${NATIVE_ARCH_ACTUAL:-}" ]]; then
+  SELECTED_ARCH="$NATIVE_ARCH_ACTUAL"
+elif [[ -n "${CURRENT_ARCH:-}" && "$CURRENT_ARCH" != "undefined_arch" ]]; then
+  SELECTED_ARCH="$CURRENT_ARCH"
+elif [[ -n "${ARCHS:-}" ]]; then
   case "$ARCHS" in
-    *x86_64*) TARGET_TRIPLE="x86_64-apple-darwin" ;;
-    *) TARGET_TRIPLE="aarch64-apple-darwin" ;;
+    *" "*) SELECTED_ARCH="$(uname -m)" ;;
+    *arm64*) SELECTED_ARCH="arm64" ;;
+    *x86_64*) SELECTED_ARCH="x86_64" ;;
+    *) SELECTED_ARCH="$(uname -m)" ;;
   esac
 else
-  case "$(uname -m)" in
-    x86_64) TARGET_TRIPLE="x86_64-apple-darwin" ;;
-    arm64) TARGET_TRIPLE="aarch64-apple-darwin" ;;
-    *)
-      printf "Unsupported architecture: %s\n" "$(uname -m)" >&2
-      exit 1
-      ;;
-  esac
+  SELECTED_ARCH="$(uname -m)"
 fi
+
+case "$SELECTED_ARCH" in
+  arm64) TARGET_TRIPLE="aarch64-apple-darwin" ;;
+  x86_64) TARGET_TRIPLE="x86_64-apple-darwin" ;;
+  *)
+    printf "Unsupported architecture: %s\n" "$SELECTED_ARCH" >&2
+    exit 1
+    ;;
+esac
 
 mkdir -p "$OUTPUT_DIR"
 
