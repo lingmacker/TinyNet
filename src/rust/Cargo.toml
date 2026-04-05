@@ -1,0 +1,9 @@
+[package]
+name = "net_speed_core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "net_speed_core"
+path = "lib.rs"
+crate-type = ["rlib", "staticlib", "cdylib"]

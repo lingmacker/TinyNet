@@ -1,0 +1,7 @@
+[package]
+name = "tiny_net_rust_tests"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+net_speed_core = { path = "../../src/rust" }
