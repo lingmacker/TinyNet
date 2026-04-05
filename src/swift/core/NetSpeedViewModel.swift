@@ -5,8 +5,8 @@ import TinyNetFFI
 
 @MainActor
 final class NetSpeedViewModel: ObservableObject {
-    @Published private(set) var uploadText: String = "--"
-    @Published private(set) var downloadText: String = "--"
+    @Published private(set) var uploadSpeed: Float = 0
+    @Published private(set) var downloadSpeed: Float = 0
     @Published private(set) var errorText: String?
 
     private let refreshInterval: TimeInterval
@@ -32,8 +32,8 @@ final class NetSpeedViewModel: ObservableObject {
 
     func refresh() {
         guard let totals = readSystemTotals() else {
-            uploadText = "--"
-            downloadText = "--"
+            uploadSpeed = 0
+            downloadSpeed = 0
             errorText = "无法读取网络接口数据"
             return
         }
@@ -50,14 +50,14 @@ final class NetSpeedViewModel: ObservableObject {
         )
 
         guard result == TINYNET_FFI_OK else {
-            uploadText = "--"
-            downloadText = "--"
+            uploadSpeed = 0
+            downloadSpeed = 0
             errorText = "Rust 计算失败（错误码: \(result.rawValue)）"
             return
         }
 
-        uploadText = Self.formatBps(speed.upload_bps)
-        downloadText = Self.formatBps(speed.download_bps)
+        uploadSpeed = Float(speed.upload_bps) / 1024.0
+        downloadSpeed = Float(speed.download_bps) / 1024.0
         errorText = nil
     }
 
@@ -112,13 +112,4 @@ final class NetSpeedViewModel: ObservableObject {
             && !name.hasPrefix("llw")
     }
 
-    private static func formatBps(_ value: UInt64) -> String {
-        let kb = Double(value) / 1024.0
-        if kb < 1024 {
-            return String(format: "%.0f KB/s", kb)
-        }
-
-        let mb = kb / 1024.0
-        return String(format: "%.2f MB/s", mb)
-    }
 }

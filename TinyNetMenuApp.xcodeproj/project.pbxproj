@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,29 +35,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A30000000000000000000003 /* Build Rust Core */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Rust Core";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.a",
-				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.dylib",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/scripts/build_rust.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXGroup section */
 		A40000000000000000000001 = {
@@ -154,6 +131,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A30000000000000000000003 /* Build Rust Core */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Core";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.a",
+				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.dylib",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PROJECT_DIR/scripts/build_rust.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A30000000000000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -188,8 +188,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bridge/lib",
 				);
-				MARKETING_VERSION = 0.1.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.1.0;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet.menuapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -219,8 +219,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bridge/lib",
 				);
-				MARKETING_VERSION = 0.1.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.1.0;
 				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet.menuapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

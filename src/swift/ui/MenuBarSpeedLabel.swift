@@ -6,20 +6,33 @@ struct MenuBarSpeedLabel: View {
     @ObservedObject var viewModel: NetSpeedViewModel
 
     var body: some View {
-        let upload = Self.leftPad(viewModel.uploadText, to: 8)
-        let download = Self.leftPad(viewModel.downloadText, to: 8)
+        let upload = Self.formatSpeed(viewModel.uploadSpeed)
+        let download = Self.formatSpeed(viewModel.downloadSpeed)
         let text = "↑ \(upload)\n↓ \(download)"
 
         Image(nsImage: MenuBarIconGenerator.generateIcon(text: text))
             .renderingMode(.template)
     }
 
-    private static func leftPad(_ value: String, to length: Int) -> String {
-        if value.count >= length {
-            return value
+    private static func formatSpeed(_ speedKBps: Float) -> String {
+        let kilo: Float = 1024
+        let mega = kilo * 1024
+
+        let value: Float
+        let unit: String
+
+        if speedKBps >= mega {
+            value = speedKBps / mega
+            unit = "GB"
+        } else if speedKBps >= kilo {
+            value = speedKBps / kilo
+            unit = "MB"
+        } else {
+            value = speedKBps
+            unit = "KB"
         }
 
-        return String(repeating: " ", count: length - value.count) + value
+        return String(format: "%6.2f%@/s", value, unit)
     }
 }
 
