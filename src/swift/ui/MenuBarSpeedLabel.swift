@@ -36,17 +36,26 @@ struct MenuBarSpeedLabel: View {
     }
 }
 
+@MainActor
 final class MenuBarIconGenerator {
-    static func generateIcon(
-        text: String,
-        font: NSFont = MenuBarIconGenerator.loadCustomFont(size: 8)
-    ) -> NSImage {
+    private static let iconFont: NSFont = {
+        loadCustomFont(size: 8)
+    }()
+
+    private static var cachedText: String = ""
+    private static var cachedImage: NSImage?
+
+    static func generateIcon(text: String) -> NSImage {
+        if text == cachedText, let cachedImage {
+            return cachedImage
+        }
+
         let image = NSImage(size: NSSize(width: 66, height: 22), flipped: false) { rect in
             let style = NSMutableParagraphStyle()
             style.alignment = .right
 
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: font,
+                .font: iconFont,
                 .paragraphStyle: style,
             ]
 
@@ -63,6 +72,8 @@ final class MenuBarIconGenerator {
         }
 
         image.isTemplate = true
+        cachedText = text
+        cachedImage = image
         return image
     }
 
@@ -78,7 +89,7 @@ final class MenuBarIconGenerator {
             return .monospacedSystemFont(ofSize: size, weight: .bold)
         }
 
-        CTFontManagerRegisterGraphicsFont(cgFont, nil)
+        _ = CTFontManagerRegisterGraphicsFont(cgFont, nil)
 
         return NSFont(name: postScriptName, size: size)
             ?? .monospacedSystemFont(ofSize: size, weight: .bold)
