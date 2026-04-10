@@ -35,19 +35,19 @@
         }
       }
     },
-    "menu.show_memory_usage" : {
+    "menu.show_resource_usage" : {
       "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show memory usage"
+            "value" : "Show resource usage"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "显示内存使用率"
+            "value" : "显示资源占用率"
           }
         }
       }

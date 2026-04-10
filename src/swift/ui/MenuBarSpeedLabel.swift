@@ -10,10 +10,23 @@ struct MenuBarSpeedLabel: View {
         let download = Self.formatSpeed(viewModel.downloadSpeed)
         let speedText = "↑ \(upload)\n↓ \(download)"
         let memory = Self.formatMemory(viewModel.memoryUsagePercent)
-        let memoryText = viewModel.showMemoryUsageEnabled ? memory.map { "M\($0)" } : nil
+        let cpu = Self.formatCpu(viewModel.cpuUsagePercent)
+        let resourceText = viewModel.showResourceUsageEnabled
+            ? Self.formatResourceText(memory: memory, cpu: cpu)
+            : nil
 
-        Image(nsImage: MenuBarIconGenerator.generateIcon(leftText: speedText, rightText: memoryText))
+        Image(nsImage: MenuBarIconGenerator.generateIcon(leftText: speedText, rightText: resourceText))
             .renderingMode(.template)
+    }
+
+    private static func formatResourceText(memory: String?, cpu: String?) -> String? {
+        guard memory != nil || cpu != nil else {
+            return nil
+        }
+
+        let memoryLine = memory.map { "M\($0)" } ?? "M--%"
+        let cpuLine = cpu.map { "C\($0)" } ?? "C--%"
+        return "\(memoryLine)\n\(cpuLine)"
     }
 
     private static func formatMemory(_ memoryPercent: Float?) -> String? {
@@ -25,17 +38,28 @@ struct MenuBarSpeedLabel: View {
         return String(format: "%02.0f%%", clamped)
     }
 
+    private static func formatCpu(_ cpuPercent: Float?) -> String? {
+        guard let cpuPercent else {
+            return nil
+        }
+
+        let clamped = min(100, max(0, cpuPercent))
+        return String(format: "%2.0f%%", clamped)
+    }
+
     private static func formatSpeed(_ speedKBps: Float) -> String {
         let kilo: Float = 1024
         let mega = kilo * 1024
+        let kbToMbSwitch = kilo - 0.5
+        let mbToGbSwitch = mega - (kilo / 2)
 
         let value: Float
         let unit: String
 
-        if speedKBps >= mega {
+        if speedKBps >= mbToGbSwitch {
             value = speedKBps / mega
             unit = "GB"
-        } else if speedKBps >= kilo {
+        } else if speedKBps >= kbToMbSwitch {
             value = speedKBps / kilo
             unit = "MB"
         } else {
@@ -43,7 +67,7 @@ struct MenuBarSpeedLabel: View {
             unit = "KB"
         }
 
-        return String(format: "%6.2f%@/s", value, unit)
+        return String(format: "%4.0f%@/s", value, unit)
     }
 }
 
@@ -61,7 +85,7 @@ final class MenuBarIconGenerator {
             return cachedImage
         }
 
-        let leftWidth: CGFloat = 66
+        let leftWidth: CGFloat = 50
         let rightWidth: CGFloat = rightText == nil ? 0 : 26
         let gap: CGFloat = rightText == nil ? 0 : 2
         let totalWidth = leftWidth + gap + rightWidth

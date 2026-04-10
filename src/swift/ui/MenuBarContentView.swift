@@ -13,10 +13,10 @@ struct MenuBarContentView: View {
             }
 
             Toggle(isOn: Binding(
-                get: { viewModel.showMemoryUsageEnabled },
-                set: { viewModel.setShowMemoryUsageEnabled($0) }
+                get: { viewModel.showResourceUsageEnabled },
+                set: { viewModel.setShowResourceUsageEnabled($0) }
             )) {
-                Text(String(localized: "menu.show_memory_usage", table: "Localizable"))
+                Text(String(localized: "menu.show_resource_usage", table: "Localizable"))
             }
 
             Divider()

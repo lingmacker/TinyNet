@@ -4,19 +4,29 @@ import Darwin
 import ServiceManagement
 import TinyNetFFI
 
+private struct CpuTicks {
+    let user: UInt64
+    let nice: UInt64
+    let system: UInt64
+    let idle: UInt64
+}
+
 @MainActor
 final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var uploadSpeed: Float = 0
     @Published private(set) var downloadSpeed: Float = 0
     @Published private(set) var launchAtLoginEnabled: Bool = false
     @Published private(set) var memoryUsagePercent: Float?
-    @Published private(set) var showMemoryUsageEnabled: Bool = false
+    @Published private(set) var cpuUsagePercent: Float?
+    @Published private(set) var showResourceUsageEnabled: Bool = false
 
     private let refreshInterval: TimeInterval
     private let calculator: OpaquePointer
     private var timerCancellable: AnyCancellable?
+    private var previousCpuTicksByCore: [CpuTicks]?
 
-    private static let showMemoryUsagePreferenceKey = "menu.show_memory_usage.enabled"
+    private static let showResourceUsagePreferenceKey = "menu.show_resource_usage.enabled"
+    private static let legacyShowMemoryUsagePreferenceKey = "menu.show_memory_usage.enabled"
 
     init(refreshInterval: TimeInterval = 1.0) {
         self.refreshInterval = refreshInterval
@@ -26,7 +36,19 @@ final class NetSpeedViewModel: ObservableObject {
         }
 
         self.calculator = calculator
-        showMemoryUsageEnabled = UserDefaults.standard.bool(forKey: Self.showMemoryUsagePreferenceKey)
+
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: Self.showResourceUsagePreferenceKey) != nil {
+            showResourceUsageEnabled = defaults.bool(forKey: Self.showResourceUsagePreferenceKey)
+        } else {
+            let legacyEnabled = defaults.bool(forKey: Self.legacyShowMemoryUsagePreferenceKey)
+            if defaults.object(forKey: Self.legacyShowMemoryUsagePreferenceKey) != nil {
+                defaults.set(legacyEnabled, forKey: Self.showResourceUsagePreferenceKey)
+            }
+            showResourceUsageEnabled = legacyEnabled
+        }
+
+        _ = readSystemCpuUsagePercent()
         syncLaunchAtLoginStatus()
         startAutoRefresh()
         refresh()
@@ -38,10 +60,16 @@ final class NetSpeedViewModel: ObservableObject {
     }
 
     func refresh() {
-        if showMemoryUsageEnabled {
+        if showResourceUsageEnabled {
             memoryUsagePercent = readSystemMemoryUsagePercent()
-        } else if memoryUsagePercent != nil {
-            memoryUsagePercent = nil
+            cpuUsagePercent = readSystemCpuUsagePercent()
+        } else {
+            if memoryUsagePercent != nil {
+                memoryUsagePercent = nil
+            }
+            if cpuUsagePercent != nil {
+                cpuUsagePercent = nil
+            }
         }
 
         guard let totals = readSystemTotals() else {
@@ -132,9 +160,12 @@ final class NetSpeedViewModel: ObservableObject {
         launchAtLoginEnabled = SMAppService.mainApp.status == .enabled
     }
 
-    func setShowMemoryUsageEnabled(_ enabled: Bool) {
-        showMemoryUsageEnabled = enabled
-        UserDefaults.standard.set(enabled, forKey: Self.showMemoryUsagePreferenceKey)
+    func setShowResourceUsageEnabled(_ enabled: Bool) {
+        showResourceUsageEnabled = enabled
+        UserDefaults.standard.set(enabled, forKey: Self.showResourceUsagePreferenceKey)
+
+        previousCpuTicksByCore = nil
+
         refresh()
     }
 
@@ -164,6 +195,92 @@ final class NetSpeedViewModel: ObservableObject {
         let usedBytes = usedPages * pageSize
 
         return Float((usedBytes / totalBytes) * 100)
+    }
+
+    private func readSystemCpuUsagePercent() -> Float? {
+        var cpuCount: natural_t = 0
+        var cpuInfo: processor_info_array_t?
+        var cpuInfoCount: mach_msg_type_number_t = 0
+
+        let result = host_processor_info(
+            mach_host_self(),
+            PROCESSOR_CPU_LOAD_INFO,
+            &cpuCount,
+            &cpuInfo,
+            &cpuInfoCount
+        )
+
+        guard result == KERN_SUCCESS, let cpuInfo else {
+            return nil
+        }
+
+        defer {
+            vm_deallocate(
+                mach_task_self_,
+                vm_address_t(bitPattern: cpuInfo),
+                vm_size_t(cpuInfoCount) * vm_size_t(MemoryLayout<integer_t>.stride)
+            )
+        }
+
+        let ticks = UnsafeBufferPointer(start: cpuInfo, count: Int(cpuInfoCount))
+        let cores = Int(cpuCount)
+        let stride = Int(CPU_STATE_MAX)
+        guard ticks.count >= cores * stride else {
+            return nil
+        }
+
+        var currentByCore: [CpuTicks] = []
+        currentByCore.reserveCapacity(cores)
+
+        for core in 0..<cores {
+            let base = core * stride
+            currentByCore.append(
+                CpuTicks(
+                    user: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_USER)])),
+                    nice: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_NICE)])),
+                    system: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_SYSTEM)])),
+                    idle: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_IDLE)]))
+                )
+            )
+        }
+
+        guard let previousByCore = previousCpuTicksByCore, previousByCore.count == currentByCore.count else {
+            previousCpuTicksByCore = currentByCore
+            return nil
+        }
+
+        var usedDelta: UInt64 = 0
+        var totalDelta: UInt64 = 0
+
+        for index in currentByCore.indices {
+            let current = currentByCore[index]
+            let previous = previousByCore[index]
+
+            guard current.user >= previous.user,
+                  current.nice >= previous.nice,
+                  current.system >= previous.system,
+                  current.idle >= previous.idle
+            else {
+                previousCpuTicksByCore = currentByCore
+                return nil
+            }
+
+            let user = current.user - previous.user
+            let nice = current.nice - previous.nice
+            let system = current.system - previous.system
+            let idle = current.idle - previous.idle
+
+            usedDelta += user + nice + system
+            totalDelta += user + nice + system + idle
+        }
+
+        previousCpuTicksByCore = currentByCore
+
+        guard totalDelta > 0 else {
+            return nil
+        }
+
+        return Float(Double(usedDelta) * 100.0 / Double(totalDelta))
     }
 
     private static func isSupportedInterface(_ name: String) -> Bool {
