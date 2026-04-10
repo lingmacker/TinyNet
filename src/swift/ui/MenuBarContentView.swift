@@ -12,6 +12,13 @@ struct MenuBarContentView: View {
                 Text(String(localized: "menu.launch_at_login", table: "Localizable"))
             }
 
+            Toggle(isOn: Binding(
+                get: { viewModel.showMemoryUsageEnabled },
+                set: { viewModel.setShowMemoryUsageEnabled($0) }
+            )) {
+                Text(String(localized: "menu.show_memory_usage", table: "Localizable"))
+            }
+
             Divider()
 
             Button(String(localized: "menu.quit", table: "Localizable")) {

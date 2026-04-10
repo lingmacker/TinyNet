@@ -9,10 +9,14 @@ final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var uploadSpeed: Float = 0
     @Published private(set) var downloadSpeed: Float = 0
     @Published private(set) var launchAtLoginEnabled: Bool = false
+    @Published private(set) var memoryUsagePercent: Float?
+    @Published private(set) var showMemoryUsageEnabled: Bool = false
 
     private let refreshInterval: TimeInterval
     private let calculator: OpaquePointer
     private var timerCancellable: AnyCancellable?
+
+    private static let showMemoryUsagePreferenceKey = "menu.show_memory_usage.enabled"
 
     init(refreshInterval: TimeInterval = 1.0) {
         self.refreshInterval = refreshInterval
@@ -22,6 +26,7 @@ final class NetSpeedViewModel: ObservableObject {
         }
 
         self.calculator = calculator
+        showMemoryUsageEnabled = UserDefaults.standard.bool(forKey: Self.showMemoryUsagePreferenceKey)
         syncLaunchAtLoginStatus()
         startAutoRefresh()
         refresh()
@@ -33,6 +38,12 @@ final class NetSpeedViewModel: ObservableObject {
     }
 
     func refresh() {
+        if showMemoryUsageEnabled {
+            memoryUsagePercent = readSystemMemoryUsagePercent()
+        } else if memoryUsagePercent != nil {
+            memoryUsagePercent = nil
+        }
+
         guard let totals = readSystemTotals() else {
             uploadSpeed = 0
             downloadSpeed = 0
@@ -119,6 +130,40 @@ final class NetSpeedViewModel: ObservableObject {
 
     func syncLaunchAtLoginStatus() {
         launchAtLoginEnabled = SMAppService.mainApp.status == .enabled
+    }
+
+    func setShowMemoryUsageEnabled(_ enabled: Bool) {
+        showMemoryUsageEnabled = enabled
+        UserDefaults.standard.set(enabled, forKey: Self.showMemoryUsagePreferenceKey)
+        refresh()
+    }
+
+    private func readSystemMemoryUsagePercent() -> Float? {
+        var stats = vm_statistics64()
+        var count = mach_msg_type_number_t(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
+
+        let result = withUnsafeMutablePointer(to: &stats) { pointer in
+            pointer.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { integerPointer in
+                host_statistics64(mach_host_self(), HOST_VM_INFO64, integerPointer, &count)
+            }
+        }
+
+        guard result == KERN_SUCCESS else {
+            return nil
+        }
+
+        let totalBytes = Double(ProcessInfo.processInfo.physicalMemory)
+        guard totalBytes > 0 else {
+            return nil
+        }
+
+        let pageSize = Double(vm_kernel_page_size)
+        let usedPages = Double(stats.active_count)
+            + Double(stats.wire_count)
+            + Double(stats.compressor_page_count)
+        let usedBytes = usedPages * pageSize
+
+        return Float((usedBytes / totalBytes) * 100)
     }
 
     private static func isSupportedInterface(_ name: String) -> Bool {

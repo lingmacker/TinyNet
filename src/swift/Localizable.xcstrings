@@ -34,6 +34,23 @@
           }
         }
       }
+    },
+    "menu.show_memory_usage" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show memory usage"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示内存使用率"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
