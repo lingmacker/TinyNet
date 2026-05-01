@@ -11,21 +11,25 @@
 		A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* MenuBarSpeedLabel.swift */; };
 		A10000000000000000000003 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* MenuBarContentView.swift */; };
 		A10000000000000000000004 /* NetSpeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* NetSpeedViewModel.swift */; };
-		A10000000000000000000005 /* libnet_speed_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* libnet_speed_core.a */; };
+		A10000000000000000000009 /* NetSpeedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* NetSpeedModels.swift */; };
+		A10000000000000000000010 /* InterfaceFilterRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* InterfaceFilterRule.swift */; };
+		A10000000000000000000011 /* NetSpeedCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* NetSpeedCalculator.swift */; };
 		A10000000000000000000006 /* JetBrainsMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* JetBrainsMono-Bold.ttf */; };
 		A10000000000000000000007 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* Localizable.xcstrings */; };
 		A10000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TinyNet.swift; path = src/swift/TinyNet.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarSpeedLabel.swift; path = src/swift/ui/MenuBarSpeedLabel.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarContentView.swift; path = src/swift/ui/MenuBarContentView.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000004 /* NetSpeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedViewModel.swift; path = src/swift/core/NetSpeedViewModel.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000005 /* libnet_speed_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnet_speed_core.a; path = bridge/lib/libnet_speed_core.a; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TinyNet.swift; path = src/TinyNet.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarSpeedLabel.swift; path = src/ui/MenuBarSpeedLabel.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarContentView.swift; path = src/ui/MenuBarContentView.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000004 /* NetSpeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedViewModel.swift; path = src/core/NetSpeedViewModel.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000010 /* NetSpeedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedModels.swift; path = src/core/NetSpeedModels.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000011 /* InterfaceFilterRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InterfaceFilterRule.swift; path = src/core/InterfaceFilterRule.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000012 /* NetSpeedCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedCalculator.swift; path = src/core/NetSpeedCalculator.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000006 /* TinyNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000000000000000000007 /* JetBrainsMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "JetBrainsMono-Bold.ttf"; path = "Fonts/JetBrainsMono-Bold.ttf"; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000008 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = src/swift/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000008 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = src/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -34,7 +38,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000005 /* libnet_speed_core.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,10 +59,12 @@
 				A20000000000000000000002 /* MenuBarSpeedLabel.swift */,
 				A20000000000000000000003 /* MenuBarContentView.swift */,
 				A20000000000000000000004 /* NetSpeedViewModel.swift */,
+				A20000000000000000000010 /* NetSpeedModels.swift */,
+				A20000000000000000000011 /* InterfaceFilterRule.swift */,
+				A20000000000000000000012 /* NetSpeedCalculator.swift */,
 				A20000000000000000000009 /* Assets.xcassets */,
 				A20000000000000000000008 /* Localizable.xcstrings */,
 				A20000000000000000000007 /* JetBrainsMono-Bold.ttf */,
-				A20000000000000000000005 /* libnet_speed_core.a */,
 			);
 			name = TinyNet;
 			sourceTree = "<group>";
@@ -79,7 +84,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXNativeTarget "TinyNet" */;
 			buildPhases = (
-				A30000000000000000000003 /* Build Rust Core */,
 				A30000000000000000000002 /* Sources */,
 				A30000000000000000000004 /* Resources */,
 				A30000000000000000000001 /* Frameworks */,
@@ -140,28 +144,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		A30000000000000000000003 /* Build Rust Core */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Rust Core";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(PROJECT_DIR)/bridge/lib/libnet_speed_core.a",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/scripts/build_rust.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		A30000000000000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -171,6 +153,9 @@
 				A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */,
 				A10000000000000000000003 /* MenuBarContentView.swift in Sources */,
 				A10000000000000000000004 /* NetSpeedViewModel.swift in Sources */,
+				A10000000000000000000009 /* NetSpeedModels.swift in Sources */,
+				A10000000000000000000010 /* InterfaceFilterRule.swift in Sources */,
+				A10000000000000000000011 /* NetSpeedCalculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,18 +178,12 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/bridge/lib",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1.0;
-				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/bridge";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -225,18 +204,12 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/bridge/lib",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1.0;
-				MODULEMAP_FILE = "$(PROJECT_DIR)/bridge/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/bridge";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

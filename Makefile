@@ -8,12 +8,9 @@ CODE_SIGNING_REQUIRED ?= YES
 DERIVED_DATA := $(ROOT)/.build/DerivedData
 APP_PATH := $(DERIVED_DATA)/Build/Products/$(CONFIGURATION)/TinyNet.app
 
-.PHONY: build-rust build-app run clean
+.PHONY: build-app run clean
 
-build-rust:
-	bash "$(ROOT)/scripts/build_rust.sh"
-
-build-app: build-rust
+build-app:
 	xcodebuild \
 		-project "$(PROJECT)" \
 		-scheme "$(SCHEME)" \

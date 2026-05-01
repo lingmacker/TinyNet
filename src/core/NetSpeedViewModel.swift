@@ -2,7 +2,6 @@ import Foundation
 import Combine
 import Darwin
 import ServiceManagement
-import TinyNetFFI
 
 private struct CpuTicks {
     let user: UInt64
@@ -21,7 +20,7 @@ final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var showResourceUsageEnabled: Bool = false
 
     private let refreshInterval: TimeInterval
-    private let calculator: OpaquePointer
+    private let calculator: NetSpeedCalculator
     private var timerCancellable: AnyCancellable?
     private var previousCpuTicksByCore: [CpuTicks]?
 
@@ -31,11 +30,7 @@ final class NetSpeedViewModel: ObservableObject {
     init(refreshInterval: TimeInterval = 1.0) {
         self.refreshInterval = refreshInterval
 
-        guard let calculator = tinynet_calculator_new() else {
-            fatalError("Failed to initialize TinyNet calculator")
-        }
-
-        self.calculator = calculator
+        calculator = NetSpeedCalculator()
 
         let defaults = UserDefaults.standard
         if defaults.object(forKey: Self.showResourceUsagePreferenceKey) != nil {
@@ -56,7 +51,6 @@ final class NetSpeedViewModel: ObservableObject {
 
     deinit {
         timerCancellable?.cancel()
-        tinynet_calculator_free(calculator)
     }
 
     func refresh() {
@@ -79,24 +73,14 @@ final class NetSpeedViewModel: ObservableObject {
         }
 
         let timestampMs = Int64(Date().timeIntervalSince1970 * 1000)
-        var speed = TinyNetSpeedFfi(upload_bps: 0, download_bps: 0)
-
-        let result = tinynet_calculator_push_totals(
-            calculator,
-            timestampMs,
-            totals.rxBytes,
-            totals.txBytes,
-            &speed
+        let speed = calculator.pushTotals(
+            timestampMs: timestampMs,
+            rxBytes: totals.rxBytes,
+            txBytes: totals.txBytes
         )
 
-        guard result == TINYNET_FFI_OK else {
-            uploadSpeed = 0
-            downloadSpeed = 0
-            return
-        }
-
-        uploadSpeed = Float(speed.upload_bps) / 1024.0
-        downloadSpeed = Float(speed.download_bps) / 1024.0
+        uploadSpeed = Float(speed.uploadBps) / 1024.0
+        downloadSpeed = Float(speed.downloadBps) / 1024.0
     }
 
     private func startAutoRefresh() {

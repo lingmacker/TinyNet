@@ -1,4 +1,0 @@
-module TinyNetFFI [system] {
-    header "include/net_speed_ffi.h"
-    export *
-}

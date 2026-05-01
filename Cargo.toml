@@ -1,3 +1,0 @@
-[workspace]
-members = ["src/rust", "tests/rust"]
-resolver = "2"

@@ -1,26 +1,19 @@
 # TinyNet
 
-TinyNet 是一个 macOS 菜单栏网速工具，使用 **Rust + SwiftUI** 实现：
+TinyNet 是一个使用 SwiftUI 实现的 macOS 菜单栏网速工具：
 
 - 菜单栏实时显示上传/下载速度
 - 菜单项支持「开机启动」与「退出」
-- Rust 负责网速计算核心，SwiftUI 负责 UI
-
-> [!NOTE]
->
-> Claude code 实验产物
+- 可选显示系统内存和 CPU 使用率
 
 ## 项目结构
 
 ```text
 TinyNet/
-├── src/
-│   ├── rust/                 # Rust 核心与 FFI
-│   └── swift/                # SwiftUI 应用代码
-├── tests/rust/               # Rust 测试
-├── bridge/                   # Swift <-> Rust 桥接产物与头文件
-├── scripts/build_rust.sh     # Rust 构建脚本（Xcode/CLI 共用）
-├── TinyNet.xcodeproj  # Xcode 工程
+├── src/                      # SwiftUI 应用代码与网速计算核心
+├── Assets.xcassets           # App 图标资源
+├── Fonts/                    # 菜单栏字体资源
+├── TinyNet.xcodeproj         # Xcode 工程
 └── Makefile                  # 一键构建/运行
 ```
 
@@ -28,10 +21,6 @@ TinyNet/
 
 - macOS
 - Xcode（已安装并可使用 `xcodebuild`）
-- Rust 工具链（`cargo`）
-
-> `scripts/build_rust.sh` 会尝试从常见路径查找 `cargo`：
-> `~/.cargo/bin`、`/opt/homebrew/bin`、`/usr/local/bin`
 
 ## 编译与运行
 
@@ -43,13 +32,7 @@ TinyNet/
 make run
 ```
 
-### 2) 仅编译 Rust 核心
-
-```bash
-make build-rust
-```
-
-### 3) 编译 macOS App
+### 2) 编译 macOS App
 
 ```bash
 make build-app
@@ -81,7 +64,7 @@ make build-app CONFIGURATION=Release
 2. 选择 `TinyNet` scheme
 3. 直接 Run
 
-工程已包含 Rust 构建脚本阶段（Build Rust Core），运行时会自动先编译 Rust。
+工程不依赖外部构建脚本，直接通过 Xcode 构建 Swift 应用。
 
 ## 清理构建产物
 
