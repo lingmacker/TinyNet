@@ -20,17 +20,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TinyNet.swift; path = src/TinyNet.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarSpeedLabel.swift; path = src/ui/MenuBarSpeedLabel.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarContentView.swift; path = src/ui/MenuBarContentView.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000004 /* NetSpeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedViewModel.swift; path = src/core/NetSpeedViewModel.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000010 /* NetSpeedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedModels.swift; path = src/core/NetSpeedModels.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000011 /* InterfaceFilterRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InterfaceFilterRule.swift; path = src/core/InterfaceFilterRule.swift; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000012 /* NetSpeedCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetSpeedCalculator.swift; path = src/core/NetSpeedCalculator.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyNet.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSpeedLabel.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* NetSpeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetSpeedViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000000010 /* NetSpeedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetSpeedModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000011 /* InterfaceFilterRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceFilterRule.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* NetSpeedCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetSpeedCalculator.swift; sourceTree = "<group>"; };
 		A20000000000000000000006 /* TinyNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A20000000000000000000007 /* JetBrainsMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "JetBrainsMono-Bold.ttf"; path = "Fonts/JetBrainsMono-Bold.ttf"; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000008 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = src/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
-		A20000000000000000000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000007 /* JetBrainsMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = JetBrainsMono-Bold.ttf; sourceTree = "<group>"; };
+		A20000000000000000000008 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A20000000000000000000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,18 +56,15 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000001 /* TinyNet.swift */,
-				A20000000000000000000002 /* MenuBarSpeedLabel.swift */,
-				A20000000000000000000003 /* MenuBarContentView.swift */,
-				A20000000000000000000004 /* NetSpeedViewModel.swift */,
-				A20000000000000000000010 /* NetSpeedModels.swift */,
-				A20000000000000000000011 /* InterfaceFilterRule.swift */,
-				A20000000000000000000012 /* NetSpeedCalculator.swift */,
+				A40000000000000000000007 /* View */,
+				A40000000000000000000004 /* Model */,
+				A40000000000000000000005 /* Core */,
 				A20000000000000000000009 /* Assets.xcassets */,
-				A20000000000000000000008 /* Localizable.xcstrings */,
-				A20000000000000000000007 /* JetBrainsMono-Bold.ttf */,
+				A40000000000000000000006 /* Resources */,
 			);
 			name = TinyNet;
-			sourceTree = "<group>";
+			path = TinyNet;
+			sourceTree = SOURCE_ROOT;
 		};
 		A40000000000000000000003 /* Products */ = {
 			isa = PBXGroup;
@@ -75,6 +72,50 @@
 				A20000000000000000000006 /* TinyNet.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* NetSpeedViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000005 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000010 /* NetSpeedModels.swift */,
+				A20000000000000000000011 /* InterfaceFilterRule.swift */,
+				A20000000000000000000012 /* NetSpeedCalculator.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000008 /* Localizable.xcstrings */,
+				A40000000000000000000008 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000007 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000002 /* MenuBarSpeedLabel.swift */,
+				A20000000000000000000003 /* MenuBarContentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000008 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000007 /* JetBrainsMono-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

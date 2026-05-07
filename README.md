@@ -10,16 +10,23 @@ TinyNet 是一个使用 SwiftUI 实现的 macOS 菜单栏网速工具：
 
 ```text
 TinyNet/
-├── src/                      # SwiftUI 应用代码与网速计算核心
-├── Assets.xcassets           # App 图标资源
-├── Fonts/                    # 菜单栏字体资源
+├── TinyNet/
+│   ├── TinyNet.swift         # 应用入口
+│   ├── View/                 # 菜单栏 UI
+│   ├── Model/                # ViewModel 与状态管理
+│   ├── Core/                 # 纯网速计算核心
+│   ├── Assets.xcassets       # App 图标资源
+│   └── Resources/            # 字体与本地化资源
+├── Tests/
+│   └── TinyNetCoreTests/     # Swift Testing 测试
 ├── TinyNet.xcodeproj         # Xcode 工程
+├── Package.swift             # SwiftPM 配置
 └── Makefile                  # 一键构建/运行
 ```
 
 ## 环境要求
 
-- macOS
+- macOS 13.0 或更高版本
 - Xcode（已安装并可使用 `xcodebuild`）
 
 ## 编译与运行

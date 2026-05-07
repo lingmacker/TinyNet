@@ -12,8 +12,7 @@ let package = Package(
     targets: [
         .target(
             name: "TinyNetCore",
-            path: "src/core",
-            exclude: ["NetSpeedViewModel.swift"],
+            path: "TinyNet/Core",
             sources: [
                 "InterfaceFilterRule.swift",
                 "NetSpeedCalculator.swift",
@@ -23,7 +22,7 @@ let package = Package(
         .testTarget(
             name: "TinyNetCoreTests",
             dependencies: ["TinyNetCore"],
-            path: "tests/swift"
+            path: "Tests/TinyNetCoreTests"
         ),
     ]
 )
