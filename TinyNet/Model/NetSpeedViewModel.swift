@@ -8,6 +8,13 @@ private struct CpuTicks {
     let nice: UInt64
     let system: UInt64
     let idle: UInt64
+
+    init(buffer: UnsafeBufferPointer<integer_t>, baseIndex: Int) {
+        user = UInt64(UInt32(bitPattern: buffer[baseIndex + Int(CPU_STATE_USER)]))
+        nice = UInt64(UInt32(bitPattern: buffer[baseIndex + Int(CPU_STATE_NICE)]))
+        system = UInt64(UInt32(bitPattern: buffer[baseIndex + Int(CPU_STATE_SYSTEM)]))
+        idle = UInt64(UInt32(bitPattern: buffer[baseIndex + Int(CPU_STATE_IDLE)]))
+    }
 }
 
 @MainActor
@@ -22,10 +29,12 @@ final class NetSpeedViewModel: ObservableObject {
     private let refreshInterval: TimeInterval
     private let calculator: NetSpeedCalculator
     private var timerCancellable: AnyCancellable?
-    private var previousCpuTicksByCore: [CpuTicks]?
+    private var previousCpuTicksByCore: [CpuTicks] = []
 
     private static let showResourceUsagePreferenceKey = "menu.show_resource_usage.enabled"
     private static let legacyShowMemoryUsagePreferenceKey = "menu.show_memory_usage.enabled"
+    private static let physicalMemoryBytes = Double(ProcessInfo.processInfo.physicalMemory)
+    private static let vmPageSizeBytes = Double(vm_kernel_page_size)
 
     init(refreshInterval: TimeInterval = 1.0) {
         self.refreshInterval = refreshInterval
@@ -43,7 +52,6 @@ final class NetSpeedViewModel: ObservableObject {
             showResourceUsageEnabled = legacyEnabled
         }
 
-        _ = readSystemCpuUsagePercent()
         syncLaunchAtLoginStatus()
         startAutoRefresh()
         refresh()
@@ -72,11 +80,14 @@ final class NetSpeedViewModel: ObservableObject {
             return
         }
 
-        let timestampMs = Int64(Date().timeIntervalSince1970 * 1000)
+        let timestampMs = Int64(Date().timeIntervalSince1970 * 1_000)
+
         let speed = calculator.pushTotals(
-            timestampMs: timestampMs,
-            rxBytes: totals.rxBytes,
-            txBytes: totals.txBytes
+            NetTotalsSample(
+                timestampMs: timestampMs,
+                rxBytes: totals.rxBytes,
+                txBytes: totals.txBytes
+            )
         )
 
         uploadSpeed = Float(speed.uploadBps) / 1024.0
@@ -109,18 +120,23 @@ final class NetSpeedViewModel: ObservableObject {
 
             guard (interface.ifa_flags & UInt32(IFF_UP)) != 0 else { continue }
             guard (interface.ifa_flags & UInt32(IFF_LOOPBACK)) == 0 else { continue }
-            guard let namePointer = interface.ifa_name else { continue }
+            guard let addressPointer = interface.ifa_addr,
+                  Int32(addressPointer.pointee.sa_family) == AF_LINK,
+                  let namePointer = interface.ifa_name
+            else {
+                continue
+            }
 
             let name = String(cString: namePointer)
-            guard Self.isSupportedInterface(name) else { continue }
+            guard InterfaceFilterRule.excludeLoopbackAndVirtual.allows(name) else { continue }
 
             guard let dataPointer = interface.ifa_data else { continue }
             let data = dataPointer.assumingMemoryBound(to: if_data.self).pointee
 
-            let rx = UInt64(data.ifi_ibytes)
-            let tx = UInt64(data.ifi_obytes)
-            rxTotal = min(UInt64.max, rxTotal &+ rx)
-            txTotal = min(UInt64.max, txTotal &+ tx)
+            let (nextRxTotal, rxOverflow) = rxTotal.addingReportingOverflow(UInt64(data.ifi_ibytes))
+            let (nextTxTotal, txOverflow) = txTotal.addingReportingOverflow(UInt64(data.ifi_obytes))
+            rxTotal = rxOverflow ? UInt64.max : nextRxTotal
+            txTotal = txOverflow ? UInt64.max : nextTxTotal
         }
 
         return (rxTotal, txTotal)
@@ -148,7 +164,7 @@ final class NetSpeedViewModel: ObservableObject {
         showResourceUsageEnabled = enabled
         UserDefaults.standard.set(enabled, forKey: Self.showResourceUsagePreferenceKey)
 
-        previousCpuTicksByCore = nil
+        previousCpuTicksByCore.removeAll(keepingCapacity: true)
 
         refresh()
     }
@@ -167,12 +183,12 @@ final class NetSpeedViewModel: ObservableObject {
             return nil
         }
 
-        let totalBytes = Double(ProcessInfo.processInfo.physicalMemory)
+        let totalBytes = Self.physicalMemoryBytes
         guard totalBytes > 0 else {
             return nil
         }
 
-        let pageSize = Double(vm_kernel_page_size)
+        let pageSize = Self.vmPageSizeBytes
         let usedPages = Double(stats.active_count)
             + Double(stats.wire_count)
             + Double(stats.compressor_page_count)
@@ -213,40 +229,32 @@ final class NetSpeedViewModel: ObservableObject {
             return nil
         }
 
-        var currentByCore: [CpuTicks] = []
-        currentByCore.reserveCapacity(cores)
-
-        for core in 0..<cores {
-            let base = core * stride
-            currentByCore.append(
-                CpuTicks(
-                    user: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_USER)])),
-                    nice: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_NICE)])),
-                    system: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_SYSTEM)])),
-                    idle: UInt64(UInt32(bitPattern: ticks[base + Int(CPU_STATE_IDLE)]))
+        if previousCpuTicksByCore.count != cores {
+            previousCpuTicksByCore.removeAll(keepingCapacity: true)
+            previousCpuTicksByCore.reserveCapacity(cores)
+            for core in 0..<cores {
+                previousCpuTicksByCore.append(
+                    CpuTicks(buffer: ticks, baseIndex: core * stride)
                 )
-            )
-        }
-
-        guard let previousByCore = previousCpuTicksByCore, previousByCore.count == currentByCore.count else {
-            previousCpuTicksByCore = currentByCore
+            }
             return nil
         }
 
         var usedDelta: UInt64 = 0
         var totalDelta: UInt64 = 0
+        var countersReset = false
 
-        for index in currentByCore.indices {
-            let current = currentByCore[index]
-            let previous = previousByCore[index]
+        for core in 0..<cores {
+            let current = CpuTicks(buffer: ticks, baseIndex: core * stride)
+            let previous = previousCpuTicksByCore[core]
 
             guard current.user >= previous.user,
                   current.nice >= previous.nice,
                   current.system >= previous.system,
                   current.idle >= previous.idle
             else {
-                previousCpuTicksByCore = currentByCore
-                return nil
+                countersReset = true
+                continue
             }
 
             let user = current.user - previous.user
@@ -258,21 +266,18 @@ final class NetSpeedViewModel: ObservableObject {
             totalDelta += user + nice + system + idle
         }
 
-        previousCpuTicksByCore = currentByCore
+        for core in 0..<cores {
+            previousCpuTicksByCore[core] = CpuTicks(
+                buffer: ticks,
+                baseIndex: core * stride
+            )
+        }
 
-        guard totalDelta > 0 else {
+        guard !countersReset, totalDelta > 0 else {
             return nil
         }
 
         return Float(Double(usedDelta) * 100.0 / Double(totalDelta))
-    }
-
-    private static func isSupportedInterface(_ name: String) -> Bool {
-        !name.hasPrefix("lo")
-            && !name.hasPrefix("utun")
-            && !name.hasPrefix("awdl")
-            && !name.hasPrefix("bridge")
-            && !name.hasPrefix("llw")
     }
 
 }

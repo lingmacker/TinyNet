@@ -1,3 +1,5 @@
 .build
 .claude
 .DS_Store
+xcuserdata/
+buildServer.json

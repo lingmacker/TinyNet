@@ -11,6 +11,12 @@ struct NetSample: Equatable, Sendable {
     let interfaces: [InterfaceCounters]
 }
 
+struct NetTotalsSample: Equatable, Sendable {
+    let timestampMs: Int64
+    let rxBytes: UInt64
+    let txBytes: UInt64
+}
+
 struct NetSpeed: Equatable, Sendable {
     let downloadBps: UInt64
     let uploadBps: UInt64
