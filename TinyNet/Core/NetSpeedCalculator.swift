@@ -27,27 +27,35 @@ func computeSpeed(
 }
 
 final class NetSpeedCalculator {
-    private var previous: NetSample?
-    private let rule: InterfaceFilterRule
-
-    init(rule: InterfaceFilterRule = .excludeLoopbackAndVirtual) {
-        self.rule = rule
-    }
+    private var previous: NetTotalsSample?
 
     func reset() {
         previous = nil
     }
 
-    func pushTotals(timestampMs: Int64, rxBytes: UInt64, txBytes: UInt64) -> NetSpeed {
-        let current = NetSample(
-            timestampMs: timestampMs,
-            interfaces: [
-                InterfaceCounters(name: "en0", rxBytes: rxBytes, txBytes: txBytes),
-            ]
+    func pushTotals(_ current: NetTotalsSample) -> NetSpeed {
+        defer { previous = current }
+
+        guard let previous else {
+            return NetSpeed(downloadBps: 0, uploadBps: 0)
+        }
+
+        let elapsedMs = current.timestampMs - previous.timestampMs
+        guard elapsedMs > 0 else {
+            return NetSpeed(downloadBps: 0, uploadBps: 0)
+        }
+
+        let elapsedSeconds = Double(elapsedMs) / 1000.0
+        return NetSpeed(
+            downloadBps: bytesPerSecond(
+                deltaBytes: current.rxBytes.saturatingSubtract(previous.rxBytes),
+                elapsedSeconds: elapsedSeconds
+            ),
+            uploadBps: bytesPerSecond(
+                deltaBytes: current.txBytes.saturatingSubtract(previous.txBytes),
+                elapsedSeconds: elapsedSeconds
+            )
         )
-        let speed = computeSpeed(previous: previous, current: current, rule: rule)
-        previous = current
-        return speed
     }
 }
 

@@ -27,7 +27,7 @@ TinyNet/
 ## 环境要求
 
 - macOS 13.0 或更高版本
-- Xcode（已安装并可使用 `xcodebuild`）
+- Xcode 16 或更高版本（已安装并可使用 `xcodebuild`）
 
 ## 编译与运行
 

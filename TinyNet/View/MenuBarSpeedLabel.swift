@@ -50,16 +50,14 @@ struct MenuBarSpeedLabel: View {
     private static func formatSpeed(_ speedKBps: Float) -> String {
         let kilo: Float = 1024
         let mega = kilo * 1024
-        let kbToMbSwitch = kilo - 0.5
-        let mbToGbSwitch = mega - (kilo / 2)
 
         let value: Float
         let unit: String
 
-        if speedKBps >= mbToGbSwitch {
+        if speedKBps >= mega {
             value = speedKBps / mega
             unit = "GB"
-        } else if speedKBps >= kbToMbSwitch {
+        } else if speedKBps >= kilo {
             value = speedKBps / kilo
             unit = "MB"
         } else {
@@ -67,7 +65,7 @@ struct MenuBarSpeedLabel: View {
             unit = "KB"
         }
 
-        return String(format: "%4.0f%@/s", value, unit)
+        return String(format: "%6.2f%@/s", value, unit)
     }
 }
 
@@ -77,15 +75,19 @@ final class MenuBarIconGenerator {
         loadCustomFont(size: 8)
     }()
 
-    private static var cachedImages: [String: NSImage] = [:]
+    private static var cachedLeftText: String?
+    private static var cachedRightText: String?
+    private static var cachedImage: NSImage?
 
     static func generateIcon(leftText: String, rightText: String?) -> NSImage {
-        let cacheKey = "\(leftText)|\(rightText ?? "")"
-        if let cachedImage = cachedImages[cacheKey] {
+        if let cachedImage,
+           cachedLeftText == leftText,
+           cachedRightText == rightText
+        {
             return cachedImage
         }
 
-        let leftWidth: CGFloat = 50
+        let leftWidth: CGFloat = 66
         let rightWidth: CGFloat = rightText == nil ? 0 : 26
         let gap: CGFloat = rightText == nil ? 0 : 2
         let totalWidth = leftWidth + gap + rightWidth
@@ -111,11 +113,9 @@ final class MenuBarIconGenerator {
         }
 
         image.isTemplate = true
-        cachedImages[cacheKey] = image
-        if cachedImages.count > 64 {
-            cachedImages.removeAll(keepingCapacity: true)
-            cachedImages[cacheKey] = image
-        }
+        cachedLeftText = leftText
+        cachedRightText = rightText
+        cachedImage = image
         return image
     }
 

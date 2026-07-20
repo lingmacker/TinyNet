@@ -152,10 +152,16 @@ func saturatesAggregateDeltaOnOverflow() {
 func calculatorResetClearsPreviousSample() {
     let calculator = NetSpeedCalculator()
 
-    let first = calculator.pushTotals(timestampMs: 1_000, rxBytes: 1_000, txBytes: 2_000)
-    let second = calculator.pushTotals(timestampMs: 2_000, rxBytes: 3_000, txBytes: 5_000)
+    let first = calculator.pushTotals(
+        NetTotalsSample(timestampMs: 1_000, rxBytes: 1_000, txBytes: 2_000)
+    )
+    let second = calculator.pushTotals(
+        NetTotalsSample(timestampMs: 2_000, rxBytes: 3_000, txBytes: 5_000)
+    )
     calculator.reset()
-    let afterReset = calculator.pushTotals(timestampMs: 3_000, rxBytes: 7_000, txBytes: 11_000)
+    let afterReset = calculator.pushTotals(
+        NetTotalsSample(timestampMs: 3_000, rxBytes: 7_000, txBytes: 11_000)
+    )
 
     #expect(first.downloadBps == 0)
     #expect(first.uploadBps == 0)
