@@ -50,18 +50,16 @@ struct MenuBarContentView: View {
         } else if viewModel.appNetworkUsage.isEmpty {
             networkStatus("menu.network.empty", systemImage: "network")
         } else {
-            let maximumBps = viewModel.appNetworkUsage.map {
+            let visibleUsage = viewModel.appNetworkUsage.prefix(5)
+            let maximumBps = visibleUsage.map {
                 Double($0.downloadBps) + Double($0.uploadBps)
             }.max() ?? 0
 
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.appNetworkUsage) { usage in
-                        AppNetworkRow(usage: usage, maximumBps: maximumBps)
-                    }
+            VStack(spacing: 0) {
+                ForEach(visibleUsage) { usage in
+                    AppNetworkRow(usage: usage, maximumBps: maximumBps)
                 }
             }
-            .frame(height: min(CGFloat(viewModel.appNetworkUsage.count) * 28, 196))
         }
     }
 
