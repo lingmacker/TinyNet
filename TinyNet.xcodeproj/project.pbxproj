@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10000000000000000000014 /* NetworkRateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* NetworkRateFormatter.swift */; };
+		A10000000000000000000012 /* AppNetworkUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* AppNetworkUsage.swift */; };
+		A10000000000000000000013 /* AppNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* AppNetworkMonitor.swift */; };
 		A10000000000000000000001 /* TinyNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* TinyNet.swift */; };
 		A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* MenuBarSpeedLabel.swift */; };
 		A10000000000000000000003 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* MenuBarContentView.swift */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A20000000000000000000015 /* NetworkRateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRateFormatter.swift; sourceTree = "<group>"; };
+		A20000000000000000000013 /* AppNetworkUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUsage.swift; sourceTree = "<group>"; };
+		A20000000000000000000014 /* AppNetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkMonitor.swift; sourceTree = "<group>"; };
 		A20000000000000000000001 /* TinyNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyNet.swift; sourceTree = "<group>"; };
 		A20000000000000000000002 /* MenuBarSpeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSpeedLabel.swift; sourceTree = "<group>"; };
 		A20000000000000000000003 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000004 /* NetSpeedViewModel.swift */,
+				A20000000000000000000014 /* AppNetworkMonitor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -88,6 +95,8 @@
 				A20000000000000000000010 /* NetSpeedModels.swift */,
 				A20000000000000000000011 /* InterfaceFilterRule.swift */,
 				A20000000000000000000012 /* NetSpeedCalculator.swift */,
+				A20000000000000000000013 /* AppNetworkUsage.swift */,
+				A20000000000000000000015 /* NetworkRateFormatter.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -197,6 +206,9 @@
 				A10000000000000000000009 /* NetSpeedModels.swift in Sources */,
 				A10000000000000000000010 /* InterfaceFilterRule.swift in Sources */,
 				A10000000000000000000011 /* NetSpeedCalculator.swift in Sources */,
+				A10000000000000000000012 /* AppNetworkUsage.swift in Sources */,
+				A10000000000000000000013 /* AppNetworkMonitor.swift in Sources */,
+				A10000000000000000000014 /* NetworkRateFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,5 +10,6 @@ struct TinyNet: App {
         } label: {
             MenuBarSpeedLabel(viewModel: viewModel)
         }
+        .menuBarExtraStyle(.window)
     }
 }

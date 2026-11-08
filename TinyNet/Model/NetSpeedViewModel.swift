@@ -26,6 +26,12 @@ final class NetSpeedViewModel: ObservableObject {
     @Published private(set) var cpuUsagePercent: Float?
     @Published private(set) var showResourceUsageEnabled: Bool = false
 
+    @Published private(set) var appNetworkUsage: [AppNetworkUsage] = []
+    @Published private(set) var appNetworkUnavailable = false
+    @Published private(set) var appNetworkLoaded = false
+
+    private let appNetworkMonitor = AppNetworkMonitor()
+    private var appNetworkRefreshInProgress = false
     private let refreshInterval: TimeInterval
     private let calculator: NetSpeedCalculator
     private var timerCancellable: AnyCancellable?
@@ -62,6 +68,7 @@ final class NetSpeedViewModel: ObservableObject {
     }
 
     func refresh() {
+        refreshAppNetworkUsage()
         if showResourceUsageEnabled {
             memoryUsagePercent = readSystemMemoryUsagePercent()
             cpuUsagePercent = readSystemCpuUsagePercent()
@@ -92,6 +99,26 @@ final class NetSpeedViewModel: ObservableObject {
 
         uploadSpeed = Float(speed.uploadBps) / 1024.0
         downloadSpeed = Float(speed.downloadBps) / 1024.0
+    }
+
+    private func refreshAppNetworkUsage() {
+        guard !appNetworkRefreshInProgress else { return }
+        appNetworkRefreshInProgress = true
+        appNetworkMonitor.sample { [weak self] result in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.appNetworkRefreshInProgress = false
+                self.appNetworkLoaded = true
+                switch result {
+                case .success(let usage):
+                    self.appNetworkUsage = usage
+                    self.appNetworkUnavailable = false
+                case .failure:
+                    self.appNetworkUsage = []
+                    self.appNetworkUnavailable = true
+                }
+            }
+        }
     }
 
     private func startAutoRefresh() {

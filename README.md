@@ -3,6 +3,7 @@
 TinyNet 是一个使用 SwiftUI 实现的 macOS 菜单栏网速工具：
 
 - 菜单栏实时显示上传/下载速度
+- 菜单内按应用/进程显示实时上下行速率和本次监测累计流量，合并应用辅助进程
 - 菜单项支持「开机启动」与「退出」
 - 可选显示系统内存和 CPU 使用率
 
@@ -17,7 +18,7 @@ TinyNet/
 │   ├── Core/                 # 纯网速计算核心
 │   ├── Assets.xcassets       # App 图标资源
 │   └── Resources/            # 字体与本地化资源
-├── Tests/
+├── tests/
 │   └── TinyNetCoreTests/     # Swift Testing 测试
 ├── TinyNet.xcodeproj         # Xcode 工程
 └── Makefile                  # 一键构建/运行
@@ -71,6 +72,22 @@ make build-app CONFIGURATION=Release
 3. 直接 Run
 
 工程不依赖外部构建脚本，直接通过 Xcode 构建 Swift 应用。
+
+## 按应用网络统计
+
+使用 macOS 自带 `nettop` 在后台采样 TCP/UDP 外部流量，无需 sudo 或第三方依赖；按进程启动时间区分 PID，再通过应用路径、负责进程和父进程归并。首次采样只建立基线，累计值从 TinyNet 本次启动后开始，不保存跨启动历史。
+
+此功能不统计 loopback；代理/VPN 流量可能记在代理进程名下，采样间结束的短连接可能遗漏。它与菜单栏的网卡总速率口径不同，不能作为精确账单。分析依据、逆向范围及未移植部分见 [Mole 网络统计分析](docs/Mole-network-analysis.md)。
+
+## 测试
+
+```bash
+swift test
+# 额外运行本机 nettop 冒烟测试：
+TINYNET_LIVE_TESTS=1 swift test
+```
+
+`Package.swift` 仅用于测试统计核心和 macOS 采样器；App 仍通过 Xcode/Makefile 构建。
 
 ## 清理构建产物
 
