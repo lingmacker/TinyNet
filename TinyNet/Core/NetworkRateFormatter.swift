@@ -1,9 +1,6 @@
 import Foundation
 
 func formatNetworkRate(_ bytesPerSecond: UInt64) -> String {
-    guard bytesPerSecond > 0 else { return "0 KB/s" }
-    guard bytesPerSecond >= 1_024 else { return "<1 KB/s" }
-
     let units = ["KB/s", "MB/s", "GB/s", "TB/s", "PB/s", "EB/s"]
     var value = Double(bytesPerSecond) / 1_024
     var index = 0
@@ -11,7 +8,7 @@ func formatNetworkRate(_ bytesPerSecond: UInt64) -> String {
         value /= 1_024
         index += 1
     }
-    return "\(Int(value)) \(units[index])"
+    return String(format: "%.2f %@", value, units[index])
 }
 
 func networkRateBarLength(downloadBps: UInt64, uploadBps: UInt64, maximumBps: Double) -> Double {

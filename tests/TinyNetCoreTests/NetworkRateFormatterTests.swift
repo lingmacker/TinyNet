@@ -1,19 +1,21 @@
 import Testing
 @testable import TinyNetCore
 
-@Test("Formats compact network rates like the menu reference", arguments: [
-    (UInt64(0), "0 KB/s"),
-    (UInt64(1), "<1 KB/s"),
-    (UInt64(1_023), "<1 KB/s"),
-    (UInt64(1_024), "1 KB/s"),
-    (UInt64(13 * 1_024 + 512), "13 KB/s"),
-    (UInt64(951 * 1_024), "951 KB/s"),
-    (UInt64(1_048_575), "1023 KB/s"),
-    (UInt64(1_048_576), "1 MB/s"),
-    (UInt64(5_368_709_120), "5 GB/s"),
-    (UInt64.max, "16 EB/s"),
+@Test("Formats process network rates with two decimal places", arguments: [
+    (UInt64(0), "0.00 KB/s"),
+    (UInt64(1), "0.00 KB/s"),
+    (UInt64(512), "0.50 KB/s"),
+    (UInt64(1_023), "1.00 KB/s"),
+    (UInt64(1_024), "1.00 KB/s"),
+    (UInt64(1_040), "1.02 KB/s"),
+    (UInt64(13 * 1_024 + 512), "13.50 KB/s"),
+    (UInt64(951 * 1_024), "951.00 KB/s"),
+    (UInt64(1_048_575), "1024.00 KB/s"),
+    (UInt64(1_048_576), "1.00 MB/s"),
+    (UInt64(5_368_709_120), "5.00 GB/s"),
+    (UInt64.max, "16.00 EB/s"),
 ])
-func formatsCompactNetworkRates(bytes: UInt64, expected: String) {
+func formatsNetworkRatesWithTwoDecimals(bytes: UInt64, expected: String) {
     #expect(formatNetworkRate(bytes) == expected)
 }
 
