@@ -142,18 +142,19 @@ private struct AppNetworkRow: View {
                 HStack(spacing: 5) {
                     Text(usage.application.name)
                         .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(usage.totalBps == 0 ? .secondary : .primary)
+                        .foregroundStyle(usage.totalBps == 0 ? Color(white: 0.38) : Color.black)
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(formatNetworkRate(usage.downloadBps))
+                        .foregroundStyle(Color(white: usage.downloadBps == 0 ? 0.44 : 0.28))
                         .frame(width: 70, alignment: .trailing)
                     Text(formatNetworkRate(usage.uploadBps))
+                        .foregroundStyle(Color(white: usage.uploadBps == 0 ? 0.44 : 0.28))
                         .frame(width: 70, alignment: .trailing)
                 }
                 .font(.system(size: 10, weight: .medium))
                 .monospacedDigit()
-                .foregroundStyle(.secondary)
 
                 GeometryReader { geometry in
                     let total = Double(usage.downloadBps) + Double(usage.uploadBps)
