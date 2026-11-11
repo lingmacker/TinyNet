@@ -32,13 +32,8 @@ struct MenuBarContentView: View {
         .font(.system(size: 12, weight: .regular))
         .foregroundStyle(.primary)
         .frame(width: 320)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
         .clipShape(RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
-                .strokeBorder(Color(nsColor: .separatorColor), lineWidth: 0.5)
-                .allowsHitTesting(false)
-        }
         .onAppear {
             viewModel.syncLaunchAtLoginStatus()
         }

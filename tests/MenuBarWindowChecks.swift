@@ -64,7 +64,7 @@ struct MenuBarWindowChecks {
                 let bitmap = content.bitmapImageRepForCachingDisplay(in: content.bounds)!
                 content.cacheDisplay(in: content.bounds, to: bitmap)
                 assert(bitmap.colorAt(x: 0, y: 0)!.alphaComponent < 0.01, "The outer corner must be transparent")
-                assert(bitmap.colorAt(x: bitmap.pixelsWide / 2, y: bitmap.pixelsHigh / 2)!.alphaComponent > 0.99)
+                // WindowServer composites Liquid Glass; cached bitmaps only contain the foreground.
                 let name = appearance == .aqua ? "light" : "dark"
                 try! bitmap.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: ".build/menu-window-\(name).png"))
             }

@@ -26,7 +26,7 @@ run: build-app
 
 test-ui:
 	mkdir -p "$(ROOT)/.build"
-	swiftc -parse-as-library TinyNet/Core/*.swift TinyNet/View/*.swift tests/MenuBarWindowChecks.swift -o "$(ROOT)/.build/menu-window-checks"
+	swiftc -target "$$(uname -m)-apple-macos26.0" -parse-as-library TinyNet/Core/*.swift TinyNet/View/*.swift tests/MenuBarWindowChecks.swift -o "$(ROOT)/.build/menu-window-checks"
 	"$(ROOT)/.build/menu-window-checks"
 
 clean:
