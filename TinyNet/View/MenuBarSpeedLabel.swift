@@ -6,6 +6,11 @@ struct MenuBarSpeedLabel: View {
     @ObservedObject var viewModel: NetSpeedViewModel
 
     var body: some View {
+        Image(nsImage: image)
+            .renderingMode(.template)
+    }
+
+    var image: NSImage {
         let upload = Self.formatSpeed(viewModel.uploadSpeed)
         let download = Self.formatSpeed(viewModel.downloadSpeed)
         let speedText = "↑ \(upload)\n↓ \(download)"
@@ -15,8 +20,7 @@ struct MenuBarSpeedLabel: View {
             ? Self.formatResourceText(memory: memory, cpu: cpu)
             : nil
 
-        Image(nsImage: MenuBarIconGenerator.generateIcon(leftText: speedText, rightText: resourceText))
-            .renderingMode(.template)
+        return MenuBarIconGenerator.generateIcon(leftText: speedText, rightText: resourceText)
     }
 
     private static func formatResourceText(memory: String?, cpu: String?) -> String? {

@@ -4,6 +4,9 @@ struct MenuBarContentView: View {
     @ObservedObject var viewModel: NetSpeedViewModel
     @State private var hoveredMenuItem: String?
 
+    private static let cornerRadius: CGFloat = 12
+    private static let contentInset: CGFloat = 5
+
     var body: some View {
         VStack(spacing: 0) {
             menuItem("menu.launch_at_login", checked: viewModel.launchAtLoginEnabled) {
@@ -25,12 +28,17 @@ struct MenuBarContentView: View {
             }
             .keyboardShortcut("q")
         }
-        .padding(5)
+        .padding(Self.contentInset)
         .font(.system(size: 12, weight: .regular))
         .foregroundStyle(.primary)
         .frame(width: 320)
-        .background(.white)
-        .environment(\.colorScheme, .light)
+        .background(Color(nsColor: .windowBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
+                .strokeBorder(Color(nsColor: .separatorColor), lineWidth: 0.5)
+                .allowsHitTesting(false)
+        }
         .onAppear {
             viewModel.syncLaunchAtLoginStatus()
         }
@@ -90,8 +98,8 @@ struct MenuBarContentView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .foregroundStyle(highlighted ? Color.white : Color.black)
-        .background(highlighted ? Color.accentColor : .clear, in: RoundedRectangle(cornerRadius: 4))
+        .foregroundStyle(highlighted ? Color(nsColor: .selectedMenuItemTextColor) : Color.primary)
+        .background(highlighted ? Color.accentColor : .clear, in: RoundedRectangle(cornerRadius: Self.cornerRadius - Self.contentInset, style: .continuous))
         .onHover { hoveredMenuItem = $0 ? title : nil }
         .accessibilityAddTraits(checked == true ? .isSelected : [])
     }
@@ -142,15 +150,15 @@ private struct AppNetworkRow: View {
                 HStack(spacing: 5) {
                     Text(usage.application.name)
                         .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(usage.totalBps == 0 ? Color(white: 0.38) : Color.black)
+                        .foregroundStyle(usage.totalBps == 0 ? Color.secondary : Color.primary)
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(formatNetworkRate(usage.downloadBps))
-                        .foregroundStyle(Color(white: usage.downloadBps == 0 ? 0.44 : 0.28))
+                        .foregroundStyle(usage.downloadBps == 0 ? Color.secondary : Color.primary)
                         .frame(width: 70, alignment: .trailing)
                     Text(formatNetworkRate(usage.uploadBps))
-                        .foregroundStyle(Color(white: usage.uploadBps == 0 ? 0.44 : 0.28))
+                        .foregroundStyle(usage.uploadBps == 0 ? Color.secondary : Color.primary)
                         .frame(width: 70, alignment: .trailing)
                 }
                 .font(.system(size: 10, weight: .medium))

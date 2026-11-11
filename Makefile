@@ -8,7 +8,7 @@ CODE_SIGNING_REQUIRED ?= YES
 DERIVED_DATA := $(ROOT)/.build/DerivedData
 APP_PATH := $(DERIVED_DATA)/Build/Products/$(CONFIGURATION)/TinyNet.app
 
-.PHONY: build-app run clean
+.PHONY: build-app run test-ui clean
 
 build-app:
 	xcodebuild \
@@ -23,6 +23,11 @@ build-app:
 
 run: build-app
 	open "$(APP_PATH)"
+
+test-ui:
+	mkdir -p "$(ROOT)/.build"
+	swiftc -parse-as-library TinyNet/Core/*.swift TinyNet/View/*.swift tests/MenuBarWindowChecks.swift -o "$(ROOT)/.build/menu-window-checks"
+	"$(ROOT)/.build/menu-window-checks"
 
 clean:
 	rm -rf "$(ROOT)/.build"

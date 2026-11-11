@@ -2,14 +2,20 @@ import SwiftUI
 
 @main
 struct TinyNet: App {
-    @StateObject private var viewModel = NetSpeedViewModel()
+    @NSApplicationDelegateAdaptor(TinyNetDelegate.self) private var appDelegate
 
     var body: some Scene {
-        MenuBarExtra {
-            MenuBarContentView(viewModel: viewModel)
-        } label: {
-            MenuBarSpeedLabel(viewModel: viewModel)
+        Settings {
+            EmptyView()
         }
-        .menuBarExtraStyle(.window)
+    }
+}
+
+@MainActor
+private final class TinyNetDelegate: NSObject, NSApplicationDelegate {
+    private var menuBarController: MenuBarController?
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        menuBarController = MenuBarController(viewModel: NetSpeedViewModel())
     }
 }

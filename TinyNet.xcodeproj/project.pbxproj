@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10000000000000000000015 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000016 /* MenuBarController.swift */; };
 		A10000000000000000000014 /* NetworkRateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* NetworkRateFormatter.swift */; };
 		A10000000000000000000012 /* AppNetworkUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* AppNetworkUsage.swift */; };
 		A10000000000000000000013 /* AppNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* AppNetworkMonitor.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A20000000000000000000016 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		A20000000000000000000015 /* NetworkRateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRateFormatter.swift; sourceTree = "<group>"; };
 		A20000000000000000000013 /* AppNetworkUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkUsage.swift; sourceTree = "<group>"; };
 		A20000000000000000000014 /* AppNetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkMonitor.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				A20000000000000000000002 /* MenuBarSpeedLabel.swift */,
 				A20000000000000000000003 /* MenuBarContentView.swift */,
+				A20000000000000000000016 /* MenuBarController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				A10000000000000000000001 /* TinyNet.swift in Sources */,
 				A10000000000000000000002 /* MenuBarSpeedLabel.swift in Sources */,
 				A10000000000000000000003 /* MenuBarContentView.swift in Sources */,
+				A10000000000000000000015 /* MenuBarController.swift in Sources */,
 				A10000000000000000000004 /* NetSpeedViewModel.swift in Sources */,
 				A10000000000000000000009 /* NetSpeedModels.swift in Sources */,
 				A10000000000000000000010 /* InterfaceFilterRule.swift in Sources */,
@@ -220,7 +224,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -232,7 +236,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -246,7 +250,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -258,7 +262,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinynet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

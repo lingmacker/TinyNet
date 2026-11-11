@@ -85,6 +85,8 @@ make build-app CONFIGURATION=Release
 swift test
 # 额外运行本机 nettop 冒烟测试：
 TINYNET_LIVE_TESTS=1 swift test
+# 在已登录的 macOS 桌面会话中检查菜单窗口、深浅色和关闭行为：
+make test-ui
 ```
 
 `Package.swift` 仅用于测试统计核心和 macOS 采样器；App 仍通过 Xcode/Makefile 构建。
