@@ -78,7 +78,7 @@ make build-app CONFIGURATION=Release
 
 使用 macOS 自带 `nettop` 在后台采样 TCP/UDP 外部流量，无需 sudo 或第三方依赖；按进程启动时间区分 PID，再通过应用路径、负责进程和父进程归并。首次采样只建立基线，累计值从 TinyNet 本次启动后开始，不保存跨启动历史。
 
-此功能不统计 loopback；代理/VPN 流量可能记在代理进程名下，采样间结束的短连接可能遗漏。它与菜单栏的网卡总速率口径不同，不能作为精确账单。分析依据、逆向范围及未移植部分见 [Mole 网络统计分析](docs/Mole-network-analysis.md)。
+此功能不统计 loopback；代理/VPN 流量可能记在代理进程名下，采样间结束的短连接可能遗漏。它与菜单栏的网卡总速率口径不同，不能作为精确结果。
 
 ## 测试
 
